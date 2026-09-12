@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="description"
+    content="سُفرة منزلية — منصة الأطباق المنزلية الطازجة والطهاة الموثوقين."
+  />
+
+  <meta name="theme-color" content="#b7402c" />
+
+  <title>سُفرة منزلية | منصة الأطباق المنزلية</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=El+Messiri:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --linen: #fbf3e4;
+      --linen-deep: #f3e6cc;
+      --ink: #2a1f16;
+      --ink-soft: #6b5946;
+      --paprika: #b7402c;
+      --paprika-deep: #8f2e1f;
+      --saffron: #d69a2d;
+      --herb: #56643e;
+      --sand-line: #ddc9a3;
+      --success: #2f7d4a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background: var(--linen);
+      color: var(--ink);
+      font-family: "Cairo", sans-serif;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible {
+      outline: 3px solid #e7a66d;
+      outline-offset: 3px;
+    }
+
+    .font-display {
+      font-family: "El Messiri", "Cairo", sans-serif;
+    }
+
+    .motif-strip {
+      height: 10px;
+      background-image:
+        linear-gradient(45deg, var(--paprika) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--paprika) 25%, transparent 25%);
+      background-size: 24px 24px;
+      background-color: var(--linen-deep);
+    }
+
+    .hero-pattern {
+      background:
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.12) 0 70px, transparent 71px),
+        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0 90px, transparent 91px),
+        linear-gradient(135deg, var(--paprika), var(--paprika-deep));
+    }
+
+    .dish-card {
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+    .dish-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 30px rgba(64, 32, 20, 0.12);
+    }
+
+    .dish-card-image {
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+    }
+
+    .dish-main-image {
+      aspect-ratio: 16 / 11;
+      object-fit: cover;
+    }
+
+    .thumbnail {
+      aspect-ratio: 1 / 1;
+      cursor: pointer;
+      object-fit: cover;
+      opacity: 0.65;
+      transition: 0.2s ease;
+    }
+
+    .thumbnail:hover,
+    .thumbnail.active {
+      opacity: 1;
+      border-color: var(--paprika);
+      transform: translateY(-2px);
+    }
+
+    .star {
+      color: #e6a11b;
+    }
+
+    .rating-star {
+      color: #d1d5db;
+      cursor: pointer;
+      font-size: 1.8rem;
+      transition: 0.2s ease;
+    }
+
+    .rating-star:hover,
+    .rating-star.active {
+      color: #e6a11b;
+      transform: scale(1.1);
+    }
+
+    .toast {
+      animation: toast-in 0.3s ease-out;
+    }
+
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-backdrop {
+      background: rgba(42, 31, 22, 0.67);
+      backdrop-filter: blur(5px);
+    }
+
+    .checkout-view {
+      display: none;
+    }
+
+    .checkout-view.active {
+      display: block;
+    }
+
+    .checkout-step {
+      position: relative;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      color: #a09282;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .checkout-step:not(:last-child)::after {
+      position: absolute;
+      top: 17px;
+      right: calc(50% + 21px);
+      left: calc(-50% + 21px);
+      z-index: 0;
+      height: 2px;
+      background: #e5d8c4;
+      content: "";
+    }
+
+    .checkout-step.active,
+    .checkout-step.completed {
+      color: var(--paprika);
+    }
+
+    .checkout-step.active:not(:last-child)::after,
+    .checkout-step.completed:not(:last-child)::after {
+      background: var(--paprika);
+    }
+
+    .checkout-step-number {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      width: 36px;
+      height: 36px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: #eee6d9;
+      color: #796957;
+      font-weight: 900;
+    }
+
+    .checkout-step.active .checkout-step-number,
+    .checkout-step.completed .checkout-step-number {
+      background: var(--paprika);
+      color: white;
+    }
+
+    .payment-option {
+      cursor: pointer;
+      border: 2px solid #eadfce;
+      transition: 0.2s ease;
+    }
+
+    .payment-option:hover,
+    .payment-option.selected {
+      border-color: var(--paprika);
+      background: #fff8ed;
+    }
+
+    .cart-drawer {
+      transition: opacity 0.25s ease;
+    }
+
+    .cart-drawer-panel {
+      transition: transform 0.3s ease;
+    }
+
+    .cart-drawer.hidden .cart-drawer-panel {
+      transform: translateX(100%);
+    }
+
+    .cart-drawer:not(.hidden) .cart-drawer-panel {
+      transform: translateX(0);
+    }
+
+    .cart-item + .cart-item {
+      border-top: 1px solid #f0e7da;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- الشريط العلوي -->
+  <header class="sticky top-0 z-50 border-b border-[--sand-line] bg-[--linen]/95 shadow-sm backdrop-blur">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <button
+        id="brandButton"
+        type="button"
+        class="font-display flex items-center gap-2 text-xl font-bold text-[--paprika] sm:text-2xl"
+      >
+        <span aria-hidden="true">🍲</span>
+        <span>سُفرة منزلية</span>
+      </button>
+
+      <nav class="hidden items-center gap-6 text-sm font-bold text-[--ink-soft] md:flex" aria-label="التنقل الرئيسي">
+        <button type="button" data-view="home" class="transition hover:text-[--paprika]">الرئيسية</button>
+        <button type="button" data-section="about" class="transition hover:text-[--paprika]">عن المنصة</button>
+        <button type="button" data-section="reviews" class="transition hover:text-[--paprika]">التقييمات</button>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button
+          id="cartButton"
+          type="button"
+          class="relative rounded-xl border border-[--sand-line] bg-[--linen-deep] px-3 py-2 text-sm font-bold transition hover:border-[--paprika]"
+          aria-label="فتح سلة التسوق"
+        >
+          <span>🛒 السلة</span>
+          <span
+            id="cartBadge"
+            class="absolute -right-2 -top-2 hidden min-w-5 rounded-full bg-[--paprika] px-1.5 py-0.5 text-center text-xs font-black text-white"
+          >
+            0
+          </span>
+        </button>
+
+        <button
+          id="mobileMenuButton"
+          type="button"
+          class="rounded-xl border border-[--sand-line] p-2 text-[--paprika] md:hidden"
+          aria-label="فتح القائمة"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <nav id="mobileMenu" class="hidden border-t border-[--sand-line] bg-[--linen] px-4 py-4 md:hidden">
+      <div class="flex flex-col gap-4 text-sm font-bold text-[--ink-soft]">
+        <button type="button" data-view="home" class="text-right hover:text-[--paprika]">الرئيسية</button>
+        <button type="button" data-section="about" class="text-right hover:text-[--paprika]">عن المنصة</button>
+        <button type="button" data-section="reviews" class="text-right hover:text-[--paprika]">التقييمات</button>
+        <button type="button" data-view="cart" class="text-right hover:text-[--paprika]">فتح السلة</button>
+      </div>
+    </nav>
+  </header>
+
+  <div class="motif-strip"></div>
+
+  <main class="mx-auto min-h-[70vh] w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <!-- الصفحة الرئيسية -->
+    <section id="view-home" class="space-y-10">
+      <div class="hero-pattern flex flex-col justify-between gap-8 rounded-3xl p-7 text-white shadow-lg md:flex-row md:items-center md:p-10">
+        <div class="max-w-2xl">
+          <span class="mb-4 inline-flex rounded-full bg-white/15 px-4 py-2 text-sm font-bold">
+            مذاق البيت الحقيقي
+          </span>
+
+          <h1 class="font-display mb-4 text-3xl font-bold leading-tight sm:text-5xl">
+            أكل منزلي أصيل وطازج
+          </h1>
+
+          <p class="text-sm leading-8 text-orange-50 sm:text-base">
+            اطلب ألذ الأطباق المعدّة بإتقان من طهاة وأسر منتجة موثوقة بالقرب منك.
+          </p>
+
+          <button
+            type="button"
+            id="heroDishButton"
+            class="mt-6 rounded-xl bg-white px-5 py-3 font-bold text-[--paprika] transition hover:bg-orange-50"
+          >
+            اكتشف طبق اليوم
+          </button>
+        </div>
+
+        <div class="rounded-2xl bg-white/10 p-6 text-center backdrop-blur">
+          <span class="block text-4xl font-black">100%</span>
+          <span class="text-sm text-orange-100">مكونات طبيعية وطازجة</span>
+        </div>
+      </div>
+
+      <section id="about" class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <article class="rounded-2xl border border-[--sand-line] bg-white p-5">
+          <span class="mb-3 block text-3xl" aria-hidden="true">👩‍🍳</span>
+          <h2 class="mb-2 font-black">طهاة موثوقون</h2>
+          <p class="text-sm leading-7 text-[--ink-soft]">نختار شركاءنا بعناية لنقدم لك طعامًا منزليًا يستحق الثقة.</p>
+        </article>
+
+        <article class="rounded-2xl border border-[--sand-line] bg-white p-5">
+          <span class="mb-3 block text-3xl" aria-hidden="true">🥘</span>
+          <h2 class="mb-2 font-black">وصفات أصيلة</h2>
+          <p class="text-sm leading-7 text-[--ink-soft]">أطباق منزلية بطعم أصيل، مكونات واضحة، وتحضير يومي.</p>
+        </article>
+
+        <article class="rounded-2xl border border-[--sand-line] bg-white p-5">
+          <span class="mb-3 block text-3xl" aria-hidden="true">🚚</span>
+          <h2 class="mb-2 font-black">طلب سهل</h2>
+          <p class="text-sm leading-7 text-[--ink-soft]">أضف طلبك إلى السلة، أدخل عنوانك، واستلم وجبتك بكل سهولة.</p>
+        </article>
+      </section>
+
+      <section>
+        <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
+            <p class="mb-2 text-sm font-bold text-[--paprika]">اختيارات اليوم</p>
+            <h2 class="font-display border-r-4 border-[--paprika] pr-3 text-2xl font-bold">
+              الأطباق المتاحة اليوم
+            </h2>
+          </div>
+
+          <div class="flex flex-col gap-2 sm:flex-row">
+            <label for="searchInput" class="sr-only">ابحث عن طبق</label>
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="ابحث عن طبق..."
+              class="rounded-xl border border-[--sand-line] bg-white px-4 py-2 text-sm focus:border-[--paprika] focus:outline-none"
+            />
+
+            <label for="categoryFilter" class="sr-only">تصفية الأطباق</label>
+            <select
+              id="categoryFilter"
+              class="rounded-xl border border-[--sand-line] bg-white px-4 py-2 text-sm focus:border-[--paprika] focus:outline-none"
+            >
+              <option value="all">كل التصنيفات</option>
+              <option value="main">أطباق رئيسية</option>
+              <option value="bakery">مخبوزات</option>
+              <option value="dessert">حلويات</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="dishesGrid" class="grid grid-cols-1 gap-6 md:grid-cols-3"></div>
+
+        <div id="emptyDishes" class="hidden rounded-2xl border border-dashed border-[--sand-line] bg-white p-10 text-center">
+          <div class="mb-3 text-4xl">🔎</div>
+          <h3 class="mb-2 font-black">لم نجد نتائج مطابقة</h3>
+          <p class="text-sm text-[--ink-soft]">جرّب البحث بكلمة أخرى أو غيّر التصنيف.</p>
+        </div>
+      </section>
+    </section>
+
+    <!-- صفحة تفاصيل الطبق -->
+    <section id="view-detail" class="hidden space-y-8">
+      <button
+        id="backToHomeButton"
+        type="button"
+        class="font-bold text-[--paprika] hover:underline"
+      >
+        ← العودة إلى الأطباق
+      </button>
+
+      <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <div>
+          <div class="overflow-hidden rounded-3xl bg-white shadow-lg">
+            <img
+              id="detailMainImage"
+              class="dish-main-image w-full"
+              src=""
+              alt=""
+            />
+          </div>
+
+          <div id="detailThumbnails" class="mt-4 grid grid-cols-4 gap-3"></div>
+        </div>
+
+        <div class="rounded-3xl border border-[--sand-line] bg-white p-6 shadow-sm sm:p-8">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <span id="detailCategory" class="rounded-full bg-[--linen-deep] px-3 py-1 text-xs font-bold text-[--paprika]"></span>
+
+            <button
+              id="detailReviewLink"
+              type="button"
+              class="text-sm font-bold text-[--paprika] hover:underline"
+            >
+              ★ <span id="detailRating">4.8</span> · التقييمات
+            </button>
+          </div>
+
+          <h1 id="detailName" class="font-display mb-3 text-3xl font-bold"></h1>
+          <p id="detailChef" class="mb-5 text-sm text-[--ink-soft]"></p>
+          <p id="detailDescription" class="mb-6 text-sm leading-8 text-[--ink-soft]"></p>
+
+          <div class="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div class="rounded-2xl bg-[--linen] p-3 text-center">
+              <span class="mb-1 block text-xl">⏱️</span>
+              <span class="block text-xs text-[--ink-soft]">التحضير</span>
+              <strong class="text-sm">45 دقيقة</strong>
+            </div>
+
+            <div class="rounded-2xl bg-[--linen] p-3 text-center">
+              <span class="mb-1 block text-xl">👨‍👩‍👧</span>
+              <span class="block text-xs text-[--ink-soft]">يكفي</span>
+              <strong class="text-sm">شخصين</strong>
+            </div>
+
+            <div class="rounded-2xl bg-[--linen] p-3 text-center">
+              <span class="mb-1 block text-xl">🌶️</span>
+              <span class="block text-xs text-[--ink-soft]">الحدة</span>
+              <strong class="text-sm">متوسطة</strong>
+            </div>
+
+            <div class="rounded-2xl bg-[--linen] p-3 text-center">
+              <span class="mb-1 block text-xl">✓</span>
+              <span class="block text-xs text-[--ink-soft]">الحالة</span>
+              <strong class="text-sm text-green-700">متاح</strong>
+            </div>
+          </div>
+
+          <div class="mb-6 border-t border-[--sand-line] pt-6">
+            <h2 class="mb-3 font-black">المكونات</h2>
+            <div id="detailIngredients" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <div class="flex flex-col gap-4 border-t border-[--sand-line] pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm text-[--ink-soft]">السعر</p>
+              <strong id="detailPrice" class="text-3xl font-black text-[--paprika]"></strong>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <div class="flex items-center rounded-xl border border-[--sand-line]">
+                <button
+                  id="detailDecrease"
+                  type="button"
+                  class="px-3 py-2 text-xl font-bold text-[--ink-soft] hover:text-[--paprika]"
+                  aria-label="تقليل الكمية"
+                >
+                  −
+                </button>
+
+                <span id="detailQuantity" class="min-w-8 text-center font-bold">1</span>
+
+                <button
+                  id="detailIncrease"
+                  type="button"
+                  class="px-3 py-2 text-xl font-bold text-[--ink-soft] hover:text-[--paprika]"
+                  aria-label="زيادة الكمية"
+                >
+                  +
+                </button>
+              </div>
+
+              <button
+                id="detailAddToCart"
+                type="button"
+                class="rounded-xl bg-[--paprika] px-5 py-3 font-bold text-white transition hover:bg-[--paprika-deep]"
+              >
+                أضف للسلة
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section id="reviews" class="rounded-3xl border border-[--sand-line] bg-white p-6 shadow-sm sm:p-8">
+        <div class="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
+            <p class="mb-2 text-sm font-bold text-[--paprika]">تجارب العملاء</p>
+            <h2 class="font-display text-2xl font-bold">التقييمات وآراء المستخدمين</h2>
+          </div>
+
+          <button
+            id="openReviewButton"
+            type="button"
+            class="rounded-xl border-2 border-[--paprika] px-5 py-3 font-bold text-[--paprika] transition hover:bg-[--paprika] hover:text-white"
+          >
+            أضف تقييمك
+          </button>
+        </div>
+
+        <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div class="text-center md:border-l md:border-[--sand-line]">
+            <div id="reviewsAverage" class="text-5xl font-black text-[--paprika]">4.8</div>
+            <div class="my-2 text-2xl text-amber-500">★★★★★</div>
+            <p class="text-sm text-[--ink-soft]">
+              بناءً على <span id="reviewsCount">124</span> تقييمًا
+            </p>
+          </div>
+
+          <div id="ratingBars" class="space-y-2 md:col-span-2"></div>
+        </div>
+
+        <div class="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+          <h3 class="text-xl font-black">آراء العملاء</h3>
+
+          <label class="flex items-center gap-2 text-sm font-bold text-[--ink-soft]">
+            <span>ترتيب:</span>
+            <select id="reviewSort" class="rounded-xl border border-[--sand-line] bg-white px-3 py-2">
+              <option value="newest">الأحدث</option>
+              <option value="highest">الأعلى تقييمًا</option>
+              <option value="lowest">الأقل تقييمًا</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="reviewsList" class="grid grid-cols-1 gap-5 lg:grid-cols-2"></div>
+      </section>
+    </section>
+
+    <!-- صفحة السلة -->
+    <section id="view-cart" class="hidden space-y-6">
+      <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div>
+          <p class="mb-2 text-sm font-bold text-[--paprika]">راجع طلبك</p>
+          <h2 class="font-display border-r-4 border-[--paprika] pr-3 text-2xl font-bold">
+            سلة المشتريات
+          </h2>
+        </div>
+
+        <button
+          id="continueShoppingButton"
+          type="button"
+          class="font-bold text-[--paprika] hover:underline"
+        >
+          متابعة التسوق ←
+        </button>
+      </div>
+
+      <div id="cartEmptyState" class="hidden rounded-3xl border border-dashed border-[--sand-line] bg-white p-12 text-center">
+        <div class="mb-4 text-6xl">🛒</div>
+        <h3 class="mb-2 text-xl font-black">السلة فارغة</h3>
+        <p class="mb-6 text-sm leading-7 text-[--ink-soft]">
+          أضف طبقًا من القائمة حتى تتمكن من إتمام الطلب.
+        </p>
+
+        <button
+          id="emptyCartHomeButton"
+          type="button"
+          class="rounded-xl bg-[--paprika] px-5 py-3 font-bold text-white hover:bg-[--paprika-deep]"
+        >
+          تصفح الأطباق
+        </button>
+      </div>
+
+      <div id="cartLayout" class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div id="cartItemsList" class="space-y-4 lg:col-span-2"></div>
+
+        <aside class="h-fit rounded-3xl border border-[--sand-line] bg-white p-6 shadow-sm">
+          <h3 class="mb-5 border-b border-[--sand-line] pb-4 text-lg font-black">ملخص الطلب</h3>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-[--ink-soft]">مجموع الأطباق</span>
+              <strong id="cartSubtotal">0 دولار</strong>
+            </div>
+
+            <div class="flex justify-between">
+              <span class="text-[--ink-soft]">رسوم التوصيل</span>
+              <strong id="cartDelivery">0 دولار</strong>
+            </div>
+
+            <div class="flex justify-between border-t border-[--sand-line] pt-4 text-lg">
+              <span class="font-black">الإجمالي</span>
+              <strong id="cartTotal" class="text-[--paprika]">0 دولار</strong>
+            </div>
+          </div>
+
+          <button
+            id="cartCheckoutButton"
+            type="button"
+            class="mt-6 w-full rounded-xl bg-[--paprika] px-5 py-3 font-bold text-white transition hover:bg-[--paprika-deep]"
+          >
+            إتمام الطلب
+          </button>
+        </aside>
+      </div>
+    </section>
+
+    <!-- صفحة نجاح الطلب -->
+    <section id="view-success" class="hidden py-16 text-center">
+      <div class="mx-auto max-w-xl rounded-3xl border border-[--sand-line] bg-white p-8 shadow-sm">
+        <div class="mb-5 text-7xl">🎉</div>
+        <h2 class="font-display mb-4 text-3xl font-bold text-[--paprika]">
+          تم إرسال طلبك بنجاح
+        </h2>
+
+        <p class="mb-5 text-sm leading-8 text-[--ink-soft]">
+          شكرًا لثقتك بمنصة سُفرة منزلية. سيقوم الطاهي بمراجعة طلبك والتواصل معك قريبًا.
+        </p>
+
+        <div class="mb-6 rounded-2xl bg-[--linen] p-4">
+          <p class="text-sm text-[--ink-soft]">رقم الطلب</p>
+          <strong id="successOrderNumber" class="text-xl text-[--paprika]"></strong>
+        </div>
+
+        <button
+          id="successHomeButton"
+          type="button"
+          class="rounded-xl bg-[--ink] px-6 py-3 font-bold text-white transition hover:bg-[--paprika]"
+        >
+          العودة إلى الرئيسية
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <div class="motif-strip mt-10"></div>
+
+  <footer class="bg-[--ink] px-4 py-8 text-center text-sm text-white/80">
+    <p>© <span id="currentYear"></span> منصة سُفرة منزلية. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <!-- نافذة التقييم -->
+  <div
+    id="reviewModal"
+    class="modal-backdrop fixed inset-0 z-[80] hidden items-center justify-center overflow-y-auto px-4 py-6"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="reviewModalTitle"
+  >
+    <div class="my-auto w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
+      <div class="mb-6 flex items-center justify-between">
+        <h2 id="reviewModalTitle" class="text-xl font-black">شاركنا رأيك</h2>
+
+        <button
+          id="closeReviewModal"
+          type="button"
+          class="rounded-xl p-2 text-2xl text-gray-400 hover:bg-gray-100"
+          aria-label="إغلاق"
+        >
+          ×
+        </button>
+      </div>
+
+      <form id="reviewForm" class="space-y-5">
+        <div>
+          <label for="reviewerName" class="mb-2 block text-sm font-bold">اسمك</label>
+          <input
+            id="reviewerName"
+            required
+            maxlength="40"
+            type="text"
+            placeholder="اكتب اسمك"
+            class="w-full rounded-xl border border-[--sand-line] px-4 py-3 focus:border-[--paprika] focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <span class="mb-2 block text-sm font-bold">تقييمك للطبق</span>
+
+          <div id="ratingSelector" class="flex gap-2" dir="ltr">
+            <button type="button" class="rating-star" data-rating="1" aria-label="نجمة واحدة">★</button>
+            <button type="button" class="rating-star" data-rating="2" aria-label="نجمتان">★</button>
+            <button type="button" class="rating-star" data-rating="3" aria-label="ثلاث نجوم">★</button>
+            <button type="button" class="rating-star" data-rating="4" aria-label="أربع نجوم">★</button>
+            <button type="button" class="rating-star" data-rating="5" aria-label="خمس نجوم">★</button>
+          </div>
+
+          <p id="ratingHint" class="mt-2 text-xs text-[--ink-soft]">اختر عدد النجوم</p>
+        </div>
+
+        <div>
+          <label for="reviewText" class="mb-2 block text-sm font-bold">رأيك وتجربتك</label>
+          <textarea
+            id="reviewText"
+            required
+            maxlength="300"
+            rows="4"
+            placeholder="اكتب رأيك في الطعم والجودة والتقديم..."
+            class="w-full resize-none rounded-xl border border-[--sand-line] px-4 py-3 focus:border-[--paprika] focus:outline-none"
+          ></textarea>
+
+          <p class="mt-1 text-left text-xs text-gray-400">
+            <span id="reviewCharacters">0</span>/300
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-xl bg-[--paprika] px-5 py-3 font-bold text-white hover:bg-[--paprika-deep]"
+        >
+          نشر التقييم
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- نافذة إتمام الطلب -->
+  <div
+    id="checkoutModal"
+    class="modal-backdrop fixed inset-0 z-[90] hidden items-center justify-center overflow-y-auto px-4 py-6"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="checkoutTitle"
+  >
+    <div class="my-auto w-full max-w-3xl rounded-3xl bg-white shadow-2xl">
+      <div class="flex items-center justify-between border-b border-[--sand-line] px-5 py-5 sm:px-8">
+        <div>
+          <h2 id="checkoutTitle" class="text-xl font-black">إتمام الطلب</h2>
+          <p class="mt-1 text-xs text-[--ink-soft]">أكمل الخطوات لإرسال طلبك</p>
+        </div>
+
+        <button
+          id="closeCheckoutModal"
+          type="button"
+          class="rounded-xl p-2 text-2xl text-gray-400 hover:bg-gray-100"
+          aria-label="إغلاق"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="px-5 pt-6 sm:px-8">
+        <div class="flex items-start">
+          <div class="checkout-step active" data-step-indicator="1">
+            <span class="checkout-step-number">1</span>
+            <span>السلة</span>
+          </div>
+
+          <div class="checkout-step" data-step-indicator="2">
+            <span class="checkout-step-number">2</span>
+            <span>العنوان</span>
+          </div>
+
+          <div class="checkout-step" data-step-indicator="3">
+            <span class="checkout-step-number">3</span>
+            <span>الدفع</span>
+          </div>
+
+          <div class="checkout-step" data-step-indicator="4">
+            <span class="checkout-step-number">4</span>
+            <span>التأكيد</span>
+          </div>
+        </div>
+      </div>
+
+      <form id="checkoutForm" class="px-5 pb-6 pt-8 sm:px-8">
+        <!-- الخطوة الأولى -->
+        <section class="checkout-view active" data-step-view="1">
+          <h3 class="mb-5 text-lg font-black">مراجعة محتويات السلة</h3>
+
+          <div id="checkoutItems" class="mb-5 space-y-3"></div>
+
+          <div class="rounded-2xl bg-[--linen] p-4">
+            <div class="flex justify-between text-sm">
+              <span class="text-[--ink-soft]">الإجمالي المتوقع</span>
+              <strong id="checkoutTotal" class="text-lg text-[--paprika]">0 دولار</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- الخطوة الثانية -->
+        <section class="checkout-view" data-step-view="2">
+          <h3 class="mb-5 text-lg font-black">بيانات التوصيل</h3>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="customerName" class="mb-2 block text-sm font-bold">الاسم الكامل</label>
+              <input
+                id="customerName"
+                required
+                type="text"
+                class="w-full rounded-xl border border-[--sand-line] px-4 py-3 focus:border-[--paprika] focus:outline-none"
+                placeholder="اكتب الاسم الكامل"
+              />
+            </div>
+
+            <div>
+              <label for="customerPhone" class="mb-2 block text-sm font-bold">رقم الهاتف</label>
+              <input
+                id="customerPhone"
+                required
+                type="tel"
+                pattern="^[0-9+\-\s]{8,20}$"
+                class="w-full rounded-xl border border-[--sand-line] px-4 py-3 focus:border-[--paprika] focus:outline-none"
+                placeholder="05xxxxxxxx"
+              />
+            </div>
+
+            <div class="sm:col-span-2">
+              <label for="customerCity" class="mb-2 block text-sm font-bold">المدينة</label>
+              <select
+                id="customerCity"
+                required
+                class="w-full rounded-xl border border-[--sand-line] bg-white px-4 py-3 focus:border-[--paprika] focus:outline-none"
+              >
+                <option value="">اختر المدينة</option>
+                <option value="الرياض">الرياض</option>
+                <option value="جدة">جدة</option>
+                <option value="الدمام">الدمام</option>
+                <option value="مكة المكرمة">مكة المكرمة</option>
+                <option value="المدينة المنورة">المدينة المنورة</option>
+              </select>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label for="customerAddress" class="mb-2 block text-sm font-bold">العنوان التفصيلي</label>
+              <textarea
+                id="customerAddress"
+                required
+                rows="3"
+                class="w-full resize-none rounded-xl border border-[--sand-line] px-4 py-3 focus:border-[--paprika] focus:outline-none"
+                placeholder="الحي، الشارع، رقم المبنى، وأي تفاصيل إضافية"
+              ></textarea>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label for="orderNotes" class="mb-2 block text-sm font-bold">
+                ملاحظات الطلب
+                <span class="font-normal text-gray-400">(اختياري)</span>
+              </label>
+
+              <textarea
+                id="orderNotes"
+                rows="2"
+                class="w-full resize-none rounded-xl border border-[--sand-line] px-4 py-3 focus:border-[--paprika] focus:outline-none"
+                placeholder="مثال: الاتصال قبل الوصول..."
+              ></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- الخطوة الثالثة -->
+        <section class="checkout-view" data-step-view="3">
+          <h3 class="mb-5 text-lg font-black">طريقة الدفع</h3>
+
+          <div class="space-y-3">
+            <label class="payment-option selected flex items-center gap-4 rounded-2xl p-4">
+              <input
+                type="radio"
+                name="payment"
+                value="cash"
+                checked
+                class="h-5 w-5 accent-[--paprika]"
+              />
+              <span class="text-2xl">💵</span>
+              <span>
+                <strong class="block font-black">الدفع عند الاستلام</strong>
+                <small class="text-xs text-[--ink-soft]">ادفع عند وصول الطلب</small>
+              </span>
+            </label>
+
+            <label class="payment-option flex items-center gap-4 rounded-2xl p-4">
+              <input
+                type="radio"
+                name="payment"
+                value="card"
+                class="h-5 w-5 accent-[--paprika]"
+              />
+              <span class="text-2xl">💳</span>
+              <span>
+                <strong class="block font-black">بطاقة بنكية</strong>
+                <small class="text-xs text-[--ink-soft]">تحتاج إلى ربط بوابة دفع فعلية</small>
+              </span>
+            </label>
+
+            <label class="payment-option flex items-center gap-4 rounded-2xl p-4">
+              <input
+                type="radio"
+                name="payment"
+                value="wallet"
+                class="h-5 w-5 accent-[--paprika]"
+              />
+              <span class="text-2xl">📱</span>
+              <span>
+                <strong class="block font-black">محفظة إلكترونية</strong>
+                <small class="text-xs text-[--ink-soft]">دفع سريع من محفظتك الرقمية</small>
+              </span>
+            </label>
+          </div>
+
+          <div class="mt-6 rounded-2xl bg-gray-50 p-4 text-sm leading-7 text-[--ink-soft]">
+            هذه نسخة تجريبية للواجهة. عند ربطها بالإنتاج، يجب إرسال الطلب إلى خادم آمن وربط الدفع عبر مزود رسمي.
+          </div>
+        </section>
+
+        <!-- الخطوة الرابعة -->
+        <section class="checkout-view" data-step-view="4">
+          <div class="py-5 text-center">
+            <div class="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-4xl text-green-700">
+              ✓
+            </div>
+
+            <h3 class="mb-3 text-2xl font-black">راجع طلبك قبل الإرسال</h3>
+
+            <p class="mx-auto mb-6 max-w-lg text-sm leading-7 text-[--ink-soft]">
+              تأكد من صحة بيانات التوصيل وطريقة الدفع، ثم اضغط على زر تأكيد وإرسال الطلب.
+            </p>
+
+            <div id="finalOrderSummary" class="rounded-2xl bg-[--linen] p-5 text-right"></div>
+          </div>
+        </section>
+
+        <div class="mt-8 flex flex-col-reverse gap-3 border-t border-[--sand-line] pt-6 sm:flex-row sm:justify-between">
+          <button
+            id="checkoutBack"
+            type="button"
+            class="hidden rounded-xl border border-[--sand-line] px-5 py-3 font-bold text-[--ink-soft] hover:bg-[--linen]"
+          >
+            السابق
+          </button>
+
+          <button
+            id="checkoutNext"
+            type="button"
+            class="mr-auto rounded-xl bg-[--paprika] px-6 py-3 font-bold text-white hover:bg-[--paprika-deep]"
+          >
+            التالي
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- الإشعارات -->
+  <div
+    id="toast"
+    class="toast fixed bottom-5 left-5 z-[120] hidden max-w-sm rounded-xl bg-[--ink] px-5 py-3 text-sm font-bold text-white shadow-xl"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+  <script>
+    "use strict";
+
+    const STORAGE_KEYS = {
+      cart: "sofra_cart_v3",
+      reviews: "sofra_reviews_v3"
+    };
+
+    const dishes = [
+      {
+        id: 1,
+        name: "كبسة لحم على أصولها",
+        chef: "مطبخ أم خالد",
+        price: 45,
+        category: "طبق رئيسي",
+        categoryKey: "main",
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=1000&q=85",
+        gallery: [
+          "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=1000&q=85",
+          "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1000&q=85",
+          "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=85",
+          "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1000&q=85"
+        ],
+        description: "كبسة منزلية أصيلة محضرة بعناية من أجود أنواع اللحم والأرز والبهارات الشرقية.",
+        ingredients: ["لحم طازج", "أرز بسمتي", "بهارات مشكلة", "جزر", "زبيب", "مكسرات"]
+      },
+      {
+        id: 2,
+        name: "بيتزا إيطالية بالجبن الطبيعي",
+        chef: "الشيف سارة",
+        price: 20,
+        category: "مخبوزات",
+        categoryKey: "bakery",
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1000&q=85",
+        gallery: [
+          "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1000&q=85",
+          "https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=1000&q=85",
+          "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1000&q=85"
+        ],
+        description: "بيتزا منزلية بعجينة هشة وصلصة طماطم طازجة وجبن طبيعي غني بالنكهة.",
+        ingredients: ["عجينة طازجة", "جبن طبيعي", "صلصة طماطم", "ريحان", "زيت زيتون"]
+      },
+      {
+        id: 3,
+        name: "تشيز كيك التوت المنزلي",
+        chef: "حلويات إيماني",
+        price: 15,
+        category: "حلويات",
+        categoryKey: "dessert",
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1000&q=85",
+        gallery: [
+          "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1000&q=85",
+          "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=1000&q=85",
+          "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=1000&q=85"
+        ],
+        description: "تشيز كيك ناعم بطبقة توت طبيعية وقاعدة مقرمشة محضرة منزليًا.",
+        ingredients: ["جبن كريمي", "توت طازج", "بسكويت", "زبدة", "فانيلا"]
+      }
+    ];
+
+    const defaultReviews = [
+      {
+        id: 1,
+        name: "نورة العتيبي",
+        rating: 5,
+        date: "منذ يومين",
+        comment: "الطعم رائع جدًا واللحم كان طريًا والتتبيلة متوازنة. الكمية ممتازة والتغليف مرتب.",
+        verified: true
+      },
+      {
+        id: 2,
+        name: "محمد السالم",
+        rating: 5,
+        date: "منذ 5 أيام",
+        comment: "من ألذ الكبسات التي جربتها. واضح أن الطبق منزلي وطازج، وسأطلبه مرة أخرى بالتأكيد.",
+        verified: true
+      },
+      {
+        id: 3,
+        name: "ريم خالد",
+        rating: 4,
+        date: "منذ أسبوع",
+        comment: "الطعم ممتاز والتقديم جميل، أتمنى فقط أن تكون الحدة أقل قليلًا في الطلب القادم.",
+        verified: false
+      },
+      {
+        id: 4,
+        name: "عبدالله فهد",
+        rating: 5,
+        date: "منذ أسبوعين",
+        comment: "تجربة ممتازة من البداية حتى الاستلام. الطبق وصل ساخنًا ونكهته أصيلة جدًا.",
+        verified: true
+      }
+    ];
+
+    let cart = loadStorage(STORAGE_KEYS.cart, []);
+    let reviews = loadStorage(STORAGE_KEYS.reviews, defaultReviews);
+    let selectedDishId = null;
+    let detailQuantity = 1;
+    let selectedRating = 0;
+    let checkoutStep = 1;
+    let toastTimer = null;
+
+    function loadStorage(key, fallback) {
+      try {
+        const value = localStorage.getItem(key);
+        return value ? JSON.parse(value) : fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function saveStorage(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatPrice(value) {
+      return `${Number(value).toFixed(0)} دولار`;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.remove("hidden");
+
+      toastTimer = setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 3200);
+    }
+
+    function getCartCount() {
+      return cart.reduce((sum, item) => sum + item.quantity, 0);
+    }
+
+    function getSubtotal() {
+      return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    }
+
+    function getDeliveryFee() {
+      return cart.length > 0 ? 5 : 0;
+    }
+
+    function getTotal() {
+      return getSubtotal() + getDeliveryFee();
+    }
+
+    function updateCartBadge() {
+      const badge = document.getElementById("cartBadge");
+      const count = getCartCount();
+
+      badge.textContent = count;
+      badge.classList.toggle("hidden", count === 0);
+    }
+
+    function switchView(viewName) {
+      const views = ["home", "detail", "cart", "success"];
+
+      views.forEach((view) => {
+        document.getElementById(`view-${view}`).classList.toggle("hidden", view !== viewName);
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      if (viewName === "cart") {
+        renderCart();
+      }
+
+      closeMobileMenu();
+    }
+
+    function renderDishes() {
+      const grid = document.getElementById("dishesGrid");
+      const emptyState = document.getElementById("emptyDishes");
+      const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
+      const category = document.getElementById("categoryFilter").value;
+
+      const filteredDishes = dishes.filter((dish) => {
+        const searchable = `${dish.name} ${dish.chef} ${dish.category}`.toLowerCase();
+        const matchesSearch = searchable.includes(searchTerm);
+        const matchesCategory = category === "all" || dish.categoryKey === category;
+
+        return matchesSearch && matchesCategory;
+      });
+
+      emptyState.classList.toggle("hidden", filteredDishes.length > 0);
+
+      grid.innerHTML = filteredDishes.map((dish) => `
+        <article class="dish-card flex flex-col overflow-hidden rounded-2xl border border-[--sand-line] bg-white shadow-sm">
+          <button
+            type="button"
+            class="dish-detail-trigger overflow-hidden text-right"
+            data-dish-id="${dish.id}"
+            aria-label="عرض تفاصيل ${escapeHtml(dish.name)}"
+          >
+            <img
+              src="${escapeHtml(dish.image)}"
+              alt="${escapeHtml(dish.name)}"
+              class="dish-card-image w-full"
+              loading="lazy"
+            />
+          </button>
+
+          <div class="flex flex-1 flex-col justify-between p-5">
+            <div>
+              <div class="mb-2 flex items-center justify-between gap-2">
+                <span class="rounded-full bg-[--linen-deep] px-3 py-1 text-xs font-bold text-[--paprika]">
+                  ${escapeHtml(dish.category)}
+                </span>
+
+                <span class="text-sm font-bold text-amber-600">
+                  ★ ${dish.rating}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                class="dish-detail-trigger text-right text-lg font-bold transition hover:text-[--paprika]"
+                data-dish-id="${dish.id}"
+              >
+                ${escapeHtml(dish.name)}
+              </button>
+
+              <p class="mt-1 text-xs text-[--ink-soft]">
+                ${escapeHtml(dish.chef)}
+              </p>
+
+              <p class="mt-3 text-sm leading-7 text-[--ink-soft]">
+                ${escapeHtml(dish.description)}
+              </p>
+            </div>
+
+            <div class="mt-5 flex items-center justify-between gap-3 border-t border-[--sand-line] pt-4">
+              <strong class="text-xl font-black text-[--paprika]">
+                ${formatPrice(dish.price)}
+              </strong>
+
+              <button
+                type="button"
+                class="add-to-cart rounded-xl bg-[--ink] px-4 py-2 text-sm font-bold text-white transition hover:bg-[--paprika]"
+                data-dish-id="${dish.id}"
+              >
+                أضف للسلة
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function openDishDetails(dishId) {
+      const dish = dishes.find((item) => item.id === Number(dishId));
+      if (!dish) return;
+
+      selectedDishId = dish.id;
+      detailQuantity = 1;
+
+      document.getElementById("detailMainImage").src = dish.gallery[0];
+      document.getElementById("detailMainImage").alt = dish.name;
+      document.getElementById("detailCategory").textContent = dish.category;
+      document.getElementById("detailName").textContent = dish.name;
+      document.getElementById("detailChef").textContent = `${dish.chef} · طاهٍ موثوق`;
+      document.getElementById("detailDescription").textContent = dish.description;
+      document.getElementById("detailRating").textContent = dish.rating;
+      document.getElementById("detailPrice").textContent = formatPrice(dish.price);
+      document.getElementById("detailQuantity").textContent = detailQuantity;
+
+      document.getElementById("detailIngredients").innerHTML = dish.ingredients
+        .map((ingredient) => `
+          <span class="rounded-full bg-[--linen] px-3 py-1 text-sm text-[--ink-soft]">
+            ${escapeHtml(ingredient)}
+          </span>
+        `)
+        .join("");
+
+      document.getElementById("detailThumbnails").innerHTML = dish.gallery
+        .map((image, index) => `
+          <button
+            type="button"
+            class="thumbnail overflow-hidden rounded-xl border-2 ${index === 0 ? "active border-[--paprika]" : "border-transparent"}"
+            data-image="${escapeHtml(image)}"
+            aria-label="عرض صورة ${index + 1}"
+          >
+            <img
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(dish.name)} - صورة ${index + 1}"
+              class="h-full w-full object-cover"
+              loading="lazy"
+            />
+          </button>
+        `)
+        .join("");
+
+      switchView("detail");
+      renderReviews();
+      renderRatingSummary();
+    }
+
+    function addToCart(dishId, quantity = 1) {
+      const dish = dishes.find((item) => item.id === Number(dishId));
+      if (!dish) return;
+
+      const existingItem = cart.find((item) => item.id === dish.id);
+
+      if (existingItem) {
+        existingItem.quantity = Math.min(existingItem.quantity + quantity, 20);
+      } else {
+        cart.push({
+          id: dish.id,
+          name: dish.name,
+          chef: dish.chef,
+          price: dish.price,
+          image: dish.image,
+          quantity: Math.min(quantity, 20)
+        });
+      }
+
+      saveStorage(STORAGE_KEYS.cart, cart);
+      updateCartBadge();
+      renderCart();
+      showToast(`تمت إضافة "${dish.name}" إلى السلة.`);
+    }
+
+    function updateQuantity(dishId, change) {
+      const item = cart.find((cartItem) => cartItem.id === Number(dishId));
+      if (!item) return;
+
+      item.quantity += change;
+
+      if (item.quantity <= 0) {
+        cart = cart.filter((cartItem) => cartItem.id !== Number(dishId));
+      } else {
+        item.quantity = Math.min(item.quantity, 20);
+      }
+
+      saveStorage(STORAGE_KEYS.cart, cart);
+      updateCartBadge();
+      renderCart();
+    }
+
+    function removeFromCart(dishId) {
+      cart = cart.filter((item) => item.id !== Number(dishId));
+
+      saveStorage(STORAGE_KEYS.cart, cart);
+      updateCartBadge();
+      renderCart();
+      showToast("تم حذف الطبق من السلة.");
+    }
+
+    function renderCart() {
+      const list = document.getElementById("cartItemsList");
+      const emptyState = document.getElementById("cartEmptyState");
+      const layout = document.getElementById("cartLayout");
+
+      const isEmpty = cart.length === 0;
+
+      emptyState.classList.toggle("hidden", !isEmpty);
+      layout.classList.toggle("hidden", isEmpty);
+
+      if (isEmpty) {
+        list.innerHTML = "";
+        document.getElementById("cartSubtotal").textContent = "0 دولار";
+        document.getElementById("cartDelivery").textContent = "0 دولار";
+        document.getElementById("cartTotal").textContent = "0 دولار";
+        return;
+      }
+
+      list.innerHTML = cart.map((item) => `
+        <article class="flex items-center gap-4 rounded-2xl border border-[--sand-line] bg-white p-4 shadow-sm">
+          <img
+            src="${escapeHtml(item.image)}"
+            alt="${escapeHtml(item.name)}"
+            class="h-20 w-20 rounded-xl object-cover sm:h-24 sm:w-24"
+          />
+
+          <div class="min-w-0 flex-1">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h3 class="truncate text-sm font-black sm:text-base">
+                  ${escapeHtml(item.name)}
+                </h3>
+
+                <p class="mt-1 text-xs text-[--ink-soft]">
+                  ${escapeHtml(item.chef)}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                class="remove-cart text-xl text-gray-400 hover:text-red-600"
+                data-id="${item.id}"
+                aria-label="حذف ${escapeHtml(item.name)}"
+              >
+                ×
+              </button>
+            </div>
+
+            <div class="mt-4 flex items-center justify-between gap-3">
+              <div class="flex items-center rounded-xl border border-[--sand-line]">
+                <button
+                  type="button"
+                  class="cart-quantity px-3 py-1 text-lg font-bold hover:text-[--paprika]"
+                  data-id="${item.id}"
+                  data-change="-1"
+                  aria-label="تقليل الكمية"
+                >
+                  −
+                </button>
+
+                <span class="min-w-8 text-center text-sm font-bold">
+                  ${item.quantity}
+                </span>
+
+                <button
+                  type="button"
+                  class="cart-quantity px-3 py-1 text-lg font-bold hover:text-[--paprika]"
+                  data-id="${item.id}"
+                  data-change="1"
+                  aria-label="زيادة الكمية"
+                >
+                  +
+                </button>
+              </div>
+
+              <strong class="text-sm font-black text-[--paprika]">
+                ${formatPrice(item.price * item.quantity)}
+              </strong>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      document.getElementById("cartSubtotal").textContent = formatPrice(getSubtotal());
+      document.getElementById("cartDelivery").textContent = formatPrice(getDeliveryFee());
+      document.getElementById("cartTotal").textContent = formatPrice(getTotal());
+    }
+
+    function openCheckout() {
+      if (cart.length === 0) {
+        showToast("السلة فارغة. أضف طبقًا أولًا.");
+        return;
+      }
+
+      checkoutStep = 1;
+      renderCheckoutSummary();
+      updateCheckoutStep();
+
+      const modal = document.getElementById("checkoutModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.classList.add("overflow-hidden");
+    }
+
+    function closeCheckout() {
+      const modal = document.getElementById("checkoutModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    function renderCheckoutSummary() {
+      document.getElementById("checkoutItems").innerHTML = cart.map((item) => `
+        <div class="flex items-center justify-between gap-3 rounded-xl border border-[--sand-line] p-3">
+          <div class="flex min-w-0 items-center gap-3">
+            <img
+              src="${escapeHtml(item.image)}"
+              alt="${escapeHtml(item.name)}"
+              class="h-14 w-14 rounded-lg object-cover"
+            />
+
+            <div class="min-w-0">
+              <p class="truncate text-sm font-black">${escapeHtml(item.name)}</p>
+              <p class="mt-1 text-xs text-[--ink-soft]">الكمية: ${item.quantity}</p>
+            </div>
+          </div>
+
+          <strong class="whitespace-nowrap text-sm text-[--paprika]">
+            ${formatPrice(item.price * item.quantity)}
+          </strong>
+        </div>
+      `).join("");
+
+      document.getElementById("checkoutTotal").textContent = formatPrice(getTotal());
+    }
+
+    function updateCheckoutStep() {
+      document.querySelectorAll("[data-step-view]").forEach((view) => {
+        view.classList.toggle("active", Number(view.dataset.stepView) === checkoutStep);
+      });
+
+      document.querySelectorAll("[data-step-indicator]").forEach((indicator) => {
+        const number = Number(indicator.dataset.stepIndicator);
+        const isActive = number === checkoutStep;
+        const isCompleted = number < checkoutStep;
+
+        indicator.classList.toggle("active", isActive);
+        indicator.classList.toggle("completed", isCompleted);
+
+        indicator.querySelector(".checkout-step-number").textContent =
+          isCompleted ? "✓" : number;
+      });
+
+      document.getElementById("checkoutBack").classList.toggle("hidden", checkoutStep === 1);
+
+      document.getElementById("checkoutNext").textContent =
+        checkoutStep === 4 ? "تأكيد وإرسال الطلب" : "التالي";
+
+      if (checkoutStep === 4) {
+        renderFinalSummary();
+      }
+    }
+
+    function validateCheckoutStep() {
+      if (checkoutStep === 1) {
+        return cart.length > 0;
+      }
+
+      if (checkoutStep === 2) {
+        const fields = [
+          document.getElementById("customerName"),
+          document.getElementById("customerPhone"),
+          document.getElementById("customerCity"),
+          document.getElementById("customerAddress")
+        ];
+
+        for (const field of fields) {
+          if (!field.checkValidity()) {
+            field.reportValidity();
+            field.focus();
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      if (checkoutStep === 3) {
+        return Boolean(document.querySelector('input[name="payment"]:checked'));
+      }
+
+      return true;
+    }
+
+    function renderFinalSummary() {
+      const payment = document.querySelector('input[name="payment"]:checked')?.value;
+
+      const paymentLabels = {
+        cash: "الدفع عند الاستلام",
+        card: "بطاقة بنكية",
+        wallet: "محفظة إلكترونية"
+      };
+
+      document.getElementById("finalOrderSummary").innerHTML = `
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between gap-4">
+            <span class="text-[--ink-soft]">الاسم</span>
+            <strong>${escapeHtml(document.getElementById("customerName").value || "—")}</strong>
+          </div>
+
+          <div class="flex justify-between gap-4">
+            <span class="text-[--ink-soft]">رقم الهاتف</span>
+            <strong>${escapeHtml(document.getElementById("customerPhone").value || "—")}</strong>
+          </div>
+
+          <div class="flex justify-between gap-4">
+            <span class="text-[--ink-soft]">المدينة</span>
+            <strong>${escapeHtml(document.getElementById("customerCity").value || "—")}</strong>
+          </div>
+
+          <div class="flex justify-between gap-4">
+            <span class="text-[--ink-soft]">العنوان</span>
+            <strong class="max-w-[65%] text-left">
+              ${escapeHtml(document.getElementById("customerAddress").value || "—")}
+            </strong>
+          </div>
+
+          <div class="flex justify-between gap-4">
+            <span class="text-[--ink-soft]">طريقة الدفع</span>
+            <strong>${paymentLabels[payment] || "—"}</strong>
+          </div>
+
+          <div class="flex justify-between border-t border-[--sand-line] pt-3 text-base">
+            <span class="font-black">الإجمالي</span>
+            <strong class="text-[--paprika]">${formatPrice(getTotal())}</strong>
+          </div>
+        </div>
+      `;
+    }
+
+    function submitOrder() {
+      const orderNumber = `SF-${Date.now().toString().slice(-7)}`;
+
+      cart = [];
+      saveStorage(STORAGE_KEYS.cart, cart);
+      updateCartBadge();
+      renderCart();
+      closeCheckout();
+
+      document.getElementById("successOrderNumber").textContent = orderNumber;
+      document.getElementById("checkoutForm").reset();
+      switchView("success");
+
+      showToast(`تم إرسال الطلب رقم ${orderNumber} بنجاح.`);
+    }
+
+    function renderStars(rating) {
+      return `
+        <span class="flex gap-0.5" aria-label="${rating} من 5 نجوم">
+          ${[1, 2, 3, 4, 5].map((star) => `
+            <span class="${star <= rating ? "text-amber-500" : "text-gray-200"} text-lg">★</span>
+          `).join("")}
+        </span>
+      `;
+    }
+
+    function renderReviews() {
+      const sortType = document.getElementById("reviewSort").value;
+      const sortedReviews = [...reviews];
+
+      if (sortType === "highest") {
+        sortedReviews.sort((a, b) => b.rating - a.rating);
+      }
+
+      if (sortType === "lowest") {
+        sortedReviews.sort((a, b) => a.rating - b.rating);
+      }
+
+      if (sortType === "newest") {
+        sortedReviews.sort((a, b) => b.id - a.id);
+      }
+
+      document.getElementById("reviewsList").innerHTML = sortedReviews.map((review) => `
+        <article class="rounded-2xl border border-[--sand-line] bg-[--linen] p-5">
+          <div class="mb-4 flex items-start justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="flex h-11 w-11 items-center justify-center rounded-full bg-[--linen-deep] font-black text-[--paprika]">
+                ${escapeHtml(review.name.charAt(0))}
+              </div>
+
+              <div>
+                <h3 class="font-black">${escapeHtml(review.name)}</h3>
+                <p class="text-xs text-[--ink-soft]">${escapeHtml(review.date)}</p>
+              </div>
+            </div>
+
+            ${renderStars(review.rating)}
+          </div>
+
+          <p class="text-sm leading-8 text-[--ink-soft]">
+            “${escapeHtml(review.comment)}”
+          </p>
+
+          ${review.verified ? `
+            <div class="mt-4 text-xs font-bold text-green-700">
+              ✓ عملية شراء موثقة
+            </div>
+          ` : ""}
+        </article>
+      `).join("");
+    }
+
+    function renderRatingSummary() {
+      const totalReviews = 124 + Math.max(0, reviews.length - defaultReviews.length);
+      const addedReviews = reviews.slice(defaultReviews.length);
+      const addedScore = addedReviews.reduce((sum, review) => sum + review.rating, 0);
+      const average = ((4.8 * 124 + addedScore) / totalReviews).toFixed(1);
+
+      document.getElementById("reviewsAverage").textContent = average;
+      document.getElementById("reviewsCount").textContent = totalReviews;
+
+      const counts = [5, 4, 3, 2, 1].map((rating) => {
+        return reviews.filter((review) => review.rating === rating).length;
+      });
+
+      const totalLocalReviews = Math.max(reviews.length, 1);
+
+      document.getElementById("ratingBars").innerHTML = [5, 4, 3, 2, 1]
+        .map((rating, index) => {
+          const percentage = Math.round((counts[index] / totalLocalReviews) * 100);
+
+          return `
+            <div class="flex items-center gap-3 text-sm">
+              <span class="w-14 font-bold">${rating} نجوم</span>
+              <div class="h-2 flex-1 overflow-hidden rounded-full bg-gray-200">
+                <div
+                  class="h-full rounded-full bg-amber-400"
+                  style="width: ${Math.max(percentage, counts[index] ? 3 : 0)}%"
+                ></div>
+              </div>
+              <span class="w-10 text-left text-xs text-[--ink-soft]">${percentage}%</span>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function setSelectedRating(rating) {
+      selectedRating = rating;
+
+      document.querySelectorAll(".rating-star").forEach((button) => {
+        button.classList.toggle("active", Number(button.dataset.rating) <= rating);
+      });
+
+      document.getElementById("ratingHint").textContent = rating
+        ? `اخترت ${rating} من 5 نجوم`
+        : "اختر عدد النجوم";
+    }
+
+    function openReviewModal() {
+      const modal = document.getElementById("reviewModal");
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.classList.add("overflow-hidden");
+
+      document.getElementById("reviewerName").focus();
+    }
+
+    function closeReviewModal() {
+      const modal = document.getElementById("reviewModal");
+
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+
+      if (document.getElementById("checkoutModal").classList.contains("hidden")) {
+        document.body.classList.remove("overflow-hidden");
+      }
+    }
+
+    function closeMobileMenu() {
+      const menu = document.getElementById("mobileMenu");
+      const button = document.getElementById("mobileMenuButton");
+
+      menu.classList.add("hidden");
+      button.setAttribute("aria-expanded", "false");
+    }
+
+    // الأحداث الرئيسية
+    document.getElementById("brandButton").addEventListener("click", () => switchView("home"));
+    document.getElementById("heroDishButton").addEventListener("click", () => openDishDetails(1));
+    document.getElementById("backToHomeButton").addEventListener("click", () => switchView("home"));
+    document.getElementById("continueShoppingButton").addEventListener("click", () => switchView("home"));
+    document.getElementById("emptyCartHomeButton").addEventListener("click", () => switchView("home"));
+    document.getElementById("successHomeButton").addEventListener("click", () => switchView("home"));
+    document.getElementById("cartButton").addEventListener("click", () => switchView("cart"));
+
+    document.querySelectorAll("[data-view]").forEach((button) => {
+      button.addEventListener("click", () => switchView(button.dataset.view));
+    });
+
+    document.querySelectorAll("[data-section]").forEach((button) => {
+      button.addEventListener("click", () => {
+        switchView("detail");
+
+        if (button.dataset.section === "reviews") {
+          openDishDetails(selectedDishId || 1);
+
+          setTimeout(() => {
+            document.getElementById("reviews").scrollIntoView({
+              behavior: "smooth"
+            });
+          }, 80);
+        }
+
+        if (button.dataset.section === "about") {
+          switchView("home");
+
+          setTimeout(() => {
+            document.getElementById("about").scrollIntoView({
+              behavior: "smooth"
+            });
+          }, 80);
+        }
+      });
+    });
+
+    document.getElementById("mobileMenuButton").addEventListener("click", () => {
+      const menu = document.getElementById("mobileMenu");
+      const button = document.getElementById("mobileMenuButton");
+      const isHidden = menu.classList.toggle("hidden");
+
+      button.setAttribute("aria-expanded", String(!isHidden));
+    });
+
+    document.getElementById("searchInput").addEventListener("input", renderDishes);
+    document.getElementById("categoryFilter").addEventListener("change", renderDishes);
+
+    document.getElementById("dishesGrid").addEventListener("click", (event) => {
+      const detailButton = event.target.closest(".dish-detail-trigger");
+      const addButton = event.target.closest(".add-to-cart");
+
+      if (detailButton) {
+        openDishDetails(detailButton.dataset.dishId);
+      }
+
+      if (addButton) {
+        addToCart(addButton.dataset.dishId);
+      }
+    });
+
+    document.getElementById("detailThumbnails").addEventListener("click", (event) => {
+      const thumbnail = event.target.closest(".thumbnail");
+      if (!thumbnail) return;
+
+      document.getElementById("detailMainImage").src = thumbnail.dataset.image;
+
+      document.querySelectorAll(".thumbnail").forEach((item) => {
+        item.classList.remove("active", "border-[--paprika]");
+        item.classList.add("border-transparent");
+      });
+
+      thumbnail.classList.add("active", "border-[--paprika]");
+      thumbnail.classList.remove("border-transparent");
+    });
+
+    document.getElementById("detailIncrease").addEventListener("click", () => {
+      detailQuantity = Math.min(detailQuantity + 1, 20);
+      document.getElementById("detailQuantity").textContent = detailQuantity;
+    });
+
+    document.getElementById("detailDecrease").addEventListener("click", () => {
+      detailQuantity = Math.max(detailQuantity - 1, 1);
+      document.getElementById("detailQuantity").textContent = detailQuantity;
+    });
+
+    document.getElementById("detailAddToCart").addEventListener("click", () => {
+      addToCart(selectedDishId, detailQuantity);
+    });
+
+    document.getElementById("cartItemsList").addEventListener("click", (event) => {
+      const removeButton = event.target.closest(".remove-cart");
+      const quantityButton = event.target.closest(".cart-quantity");
+
+      if (removeButton) {
+        removeFromCart(removeButton.dataset.id);
+      }
+
+      if (quantityButton) {
+        updateQuantity(
+          quantityButton.dataset.id,
+          Number(quantityButton.dataset.change)
+        );
+      }
+    });
+
+    document.getElementById("cartCheckoutButton").addEventListener("click", openCheckout);
+
+    document.getElementById("detailReviewLink").addEventListener("click", () => {
+      document.getElementById("reviews").scrollIntoView({ behavior: "smooth" });
+    });
+
+    document.getElementById("openReviewButton").addEventListener("click", openReviewModal);
+    document.getElementById("closeReviewModal").addEventListener("click", closeReviewModal);
+
+    document.getElementById("reviewModal").addEventListener("click", (event) => {
+      if (event.target.id === "reviewModal") {
+        closeReviewModal();
+      }
+    });
+
+    document.querySelectorAll(".rating-star").forEach((button) => {
+      button.addEventListener("click", () => {
+        setSelectedRating(Number(button.dataset.rating));
+      });
+    });
+
+    document.getElementById("reviewText").addEventListener("input", (event) => {
+      document.getElementById("reviewCharacters").textContent = event.target.value.length;
+    });
+
+    document.getElementById("reviewSort").addEventListener("change", renderReviews);
+
+    document.getElementById("reviewForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (!selectedRating) {
+        showToast("يرجى اختيار عدد النجوم.");
+        return;
+      }
+
+      const name = document.getElementById("reviewerName").value.trim();
+      const comment = document.getElementById("reviewText").value.trim();
+
+      reviews.unshift({
+        id: Date.now(),
+        name,
+        rating: selectedRating,
+        comment,
+        date: "الآن",
+        verified: false
+      });
+
+      saveStorage(STORAGE_KEYS.reviews, reviews);
+
+      renderReviews();
+      renderRatingSummary();
+
+      event.target.reset();
+      document.getElementById("reviewCharacters").textContent = "0";
+      setSelectedRating(0);
+      closeReviewModal();
+
+      showToast("تم نشر تقييمك بنجاح. شكرًا لمشاركتنا رأيك.");
+    });
+
+    document.getElementById("closeCheckoutModal").addEventListener("click", closeCheckout);
+
+    document.getElementById("checkoutModal").addEventListener("click", (event) => {
+      if (event.target.id === "checkoutModal") {
+        closeCheckout();
+      }
+
+      const paymentOption = event.target.closest(".payment-option");
+
+      if (paymentOption) {
+        document.querySelectorAll(".payment-option").forEach((option) => {
+          option.classList.remove("selected");
+        });
+
+        paymentOption.classList.add("selected");
+        paymentOption.querySelector("input").checked = true;
+      }
+    });
+
+    document.getElementById("checkoutBack").addEventListener("click", () => {
+      if (checkoutStep > 1) {
+        checkoutStep -= 1;
+        updateCheckoutStep();
+      }
+    });
+
+    document.getElementById("checkoutNext").addEventListener("click", () => {
+      if (!validateCheckoutStep()) {
+        showToast("يرجى إكمال البيانات المطلوبة.");
+        return;
+      }
+
+      if (checkoutStep < 4) {
+        checkoutStep += 1;
+        updateCheckoutStep();
+      } else {
+        submitOrder();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+
+      const reviewModal = document.getElementById("reviewModal");
+      const checkoutModal = document.getElementById("checkoutModal");
+
+      if (!reviewModal.classList.contains("hidden")) {
+        closeReviewModal();
+      }
+
+      if (!checkoutModal.classList.contains("hidden")) {
+        closeCheckout();
+      }
+    });
+
+    // التشغيل الأولي
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+    renderDishes();
+    updateCartBadge();
+    renderCart();
+    renderReviews();
+    renderRatingSummary();
+  </script>
+</body>
+</html>
